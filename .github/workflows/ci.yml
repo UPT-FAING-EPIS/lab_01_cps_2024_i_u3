@@ -65,6 +65,8 @@ jobs:
   #         # dotnet-quality: 'ga'
       - name: Instalar Scanner
         run: dotnet tool install -g dotnet-sonarscanner
+      - name: Java version
+        run: java --version
       - name: Ejecutar escaneo
         run: | 
           dotnet-sonarscanner begin /k:"BankApp" /o:"${{ env.SONAR_ORG }}" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
