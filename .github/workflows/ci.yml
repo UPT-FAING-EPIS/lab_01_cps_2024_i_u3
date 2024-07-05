@@ -73,27 +73,23 @@ jobs:
   #       with:
   #         dotnet-version: ${{ env.DOTNET_VERSION }}
   #         # dotnet-quality: 'ga'
-      # - name: Instalar Scanner
-      #   run: dotnet tool install -g dotnet-sonarscanner
-      # - name: Java version
-      #   run: java --version
-      # - name: Ejecutar escaneo
-      #   run: | 
-      #     dotnet-sonarscanner begin /k:"${{ env.SONAR_PROJECT }}" /o:"${{ env.SONAR_ORG }}" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
-      #     dotnet build
-      #     dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
+      - name: Instalar Scanner
+        run: dotnet tool install -g dotnet-sonarscanner
+      - name: Ejecutar escaneo
+        run: | 
+          dotnet-sonarscanner begin /k:"${{ env.SONAR_PROJECT }}" /o:"${{ env.SONAR_ORG }}" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
+          dotnet build
+          dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
 
       - name: Install Living Doc
         run: dotnet tool install -g SpecFlow.Plus.LivingDoc.CLI
       - name: Generate living doc
-        #if: always()
         #run: livingdoc test-assembly ${{ github.workspace }}/CaducaRest.IntegrationTest/bin/Debug/net8.0/CaducaRest.IntegrationTest.dll -t ${{ github.workspace }}/CaducaRest.IntegrationTest/bin/Debug/net8.0/TestExecution.json --output ${{ github.workspace }}/TestResults/index.html
         run: livingdoc test-assembly ./Bank.Domain.Tests/bin/Debug/net8.0/Bank.Domain.Tests.dll -t ./Bank.Domain.Tests/bin/Debug/net8.0/TestExecution.json -o ./report/index.html
 
       - uses: actions/upload-artifact@v3
         with:
           name: specflow
-          #if: always()
           #path: ${{ github.workspace }}/index.html
           path: report
       - name: Deploy
