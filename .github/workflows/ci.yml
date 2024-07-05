@@ -3,7 +3,7 @@ name: Tarea Automatizada de ejecución de pruebas
 env:
   DOTNET_VERSION: '8.x'                     # la versión de .NET
   SONAR_ORG: 'p-cuadros'                     # la versión de .NET
-
+  SONAR_PROJECT: 'p-cuadros_bankapp'
 on:
   push:
     branches: [ "main" ]
@@ -79,6 +79,6 @@ jobs:
         run: java --version
       - name: Ejecutar escaneo
         run: | 
-          dotnet-sonarscanner begin /k:"BankApp" /o:"${{ env.SONAR_ORG }}" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
+          dotnet-sonarscanner begin /k:"${{ env.SONAR_PROJECT }}" /o:"${{ env.SONAR_ORG }}" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
           dotnet build
           dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
