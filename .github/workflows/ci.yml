@@ -2,6 +2,7 @@ name: Tarea Automatizada de ejecución de pruebas
 
 env:
   DOTNET_VERSION: '8.x'                     # la versión de .NET
+  SONAR_ORG: 'p.cuadros'                     # la versión de .NET
 
 on:
   push:
@@ -11,7 +12,8 @@ permissions:
   contents: read
 
 jobs:
-  build:
+  coverage:
+    name: CoverageReport
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -50,3 +52,21 @@ jobs:
       - name: Publish coverage in build summary # Only applicable if 'MarkdownSummaryGithub' or one of the other Markdown report types is generated
         run: cat coveragereport/SummaryGithub.md >> $GITHUB_STEP_SUMMARY # Adjust path and filename if necessary
         shell: bash
+
+  sonarcloud:
+    name: SonarCloud
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Configurando la versión de NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+          # dotnet-quality: 'ga'
+      - name: Instalar Scanner
+        run: dotnet tool update dotnet-sonarscanner
+      - name: Ejecutar escaneo
+        run: | 
+          dotnet-sonarscanner begin /k:"BankApp" /o:"${{ env.SONAR_ORG }}" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
+          dotnet build SomeConsoleApplication.sln
+          dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
