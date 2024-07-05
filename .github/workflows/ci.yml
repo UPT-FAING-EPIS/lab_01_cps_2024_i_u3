@@ -68,5 +68,5 @@ jobs:
       - name: Ejecutar escaneo
         run: | 
           dotnet-sonarscanner begin /k:"BankApp" /o:"${{ env.SONAR_ORG }}" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
-          dotnet build SomeConsoleApplication.sln
+          dotnet build
           dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
