@@ -1,0 +1,43 @@
+name: Tarea Automatizada de ejecución de pruebas
+
+env:
+  DOTNET_VERSION: '8.x'                     # la versión de .NET
+
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Configurando la versión de NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+          dotnet-quality: 'ga'
+
+      - name: ReportGenerator
+        uses: danielpalme/ReportGenerator-GitHub-Action@5.3.7
+        with:
+          reports: cobertura.xml
+          targetdir: coveragereport
+          reporttypes: MarkdownSummary;MarkdownAssembliesSummary;MarkdownSummaryGithub;MarkdownDeltaSummary
+      # - uses: actions/checkout@v4
+      # - name: Configurando .NET Core
+      #   uses: actions/setup-dotnet@v4
+      #   with:
+      #     dotnet-version: ${{ env.DOTNET_VERSION }}
+      # - name: Restaurar los paquetes
+      #   run: dotnet restore 
+      # - name: Publicar la aplicación de manera local
+      #   run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/publish
+      # - name: Subir el artefacto para el job de despliegue
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: .net-app
+      #     path: ${{env.DOTNET_ROOT}}/publish
+
