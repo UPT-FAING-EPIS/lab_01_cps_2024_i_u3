@@ -53,16 +53,16 @@ jobs:
         run: cat coveragereport/SummaryGithub.md >> $GITHUB_STEP_SUMMARY # Adjust path and filename if necessary
         shell: bash
 
-  sonarcloud:
-    name: SonarCloud
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Configurando la versión de NET
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: ${{ env.DOTNET_VERSION }}
-          # dotnet-quality: 'ga'
+  # sonarcloud:
+  #   name: SonarCloud
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - name: Configurando la versión de NET
+  #       uses: actions/setup-dotnet@v4
+  #       with:
+  #         dotnet-version: ${{ env.DOTNET_VERSION }}
+  #         # dotnet-quality: 'ga'
       - name: Instalar Scanner
         run: dotnet tool install -g dotnet-sonarscanner
       - name: Ejecutar escaneo
