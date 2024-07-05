@@ -31,7 +31,7 @@ jobs:
           # reports: cobertura.xml
           # targetdir: coveragereport
           reports: ./*/*/*/coverage.cobertura.xml
-          targetdir: Cobertura
+          targetdir: coveragereport
           reporttypes: MarkdownSummary;MarkdownAssembliesSummary;MarkdownSummaryGithub
 
       - name: Upload coverage report artifact
