@@ -14,21 +14,24 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
       - name: Configurando la versión de NET
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
-          # dotnet-quality: 'ga'
-      - name: Restaurar los paquetes
-        run: dotnet restore 
-      - name: Ejecutar pruebas
-        run: dotnet test --collect:"XPlat Code Coverage"
+          dotnet-quality: 'ga'
+      # - name: Restaurar los paquetes
+      #   run: dotnet restore 
+      # - name: Ejecutar pruebas
+      #   run: dotnet test --collect:"XPlat Code Coverage"
 
       - name: ReportGenerator
         uses: danielpalme/ReportGenerator-GitHub-Action@5.3.7
         with:
-          reports: ./*/*/*/coverage.cobertura.xml
-          targetdir: Cobertura
+          reports: cobertura.xml
+          targetdir: coveragereport
+          # reports: ./*/*/*/coverage.cobertura.xml
+          # targetdir: Cobertura
           reporttypes: MarkdownSummary;MarkdownAssembliesSummary;MarkdownSummaryGithub;MarkdownDeltaSummary
       # - uses: actions/checkout@v4
       # - name: Configurando .NET Core
