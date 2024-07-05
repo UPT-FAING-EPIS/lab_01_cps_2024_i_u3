@@ -101,4 +101,5 @@ jobs:
         with:
           #if: always()
           github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: bddreport
           publish_dir: ./report/
